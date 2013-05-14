@@ -9,6 +9,7 @@
  * ----------------------------------------------------------------------------- */
 
 #define SWIGPYTHON
+#define SWIG_PYTHON_THREADS
 #define SWIG_PYTHON_DIRECTOR_NO_VTABLE
 
 
@@ -3271,7 +3272,11 @@ SWIGINTERN PyObject *_wrap_new_SM3(PyObject *SWIGUNUSEDPARM(self), PyObject *arg
     arg1 = (unsigned char*)PyString_AsString(obj0);
     arg2 = PyString_Size(obj0);
   }
-  result = (SM3 *)new SM3((unsigned char const *)arg1,arg2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (SM3 *)new SM3((unsigned char const *)arg1,arg2);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_SM3, SWIG_POINTER_NEW |  0 );
   return resultobj;
 fail:
@@ -3292,7 +3297,11 @@ SWIGINTERN PyObject *_wrap_delete_SM3(PyObject *SWIGUNUSEDPARM(self), PyObject *
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_SM3" "', argument " "1"" of type '" "SM3 *""'"); 
   }
   arg1 = reinterpret_cast< SM3 * >(argp1);
-  delete arg1;
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    delete arg1;
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -3320,7 +3329,11 @@ SWIGINTERN PyObject *_wrap_SM3_update(PyObject *SWIGUNUSEDPARM(self), PyObject *
     arg2 = (unsigned char*)PyString_AsString(obj1);
     arg3 = PyString_Size(obj1);
   }
-  (arg1)->update((unsigned char const *)arg2,arg3);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    (arg1)->update((unsigned char const *)arg2,arg3);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -3346,7 +3359,11 @@ SWIGINTERN PyObject *_wrap_SM3_digest(PyObject *SWIGUNUSEDPARM(self), PyObject *
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SM3_digest" "', argument " "1"" of type '" "SM3 *""'"); 
   }
   arg1 = reinterpret_cast< SM3 * >(argp1);
-  (arg1)->digest(arg2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    (arg1)->digest(arg2);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   {
     Py_XDECREF(resultobj);
@@ -3376,7 +3393,11 @@ SWIGINTERN PyObject *_wrap_SM3_hexdigest(PyObject *SWIGUNUSEDPARM(self), PyObjec
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SM3_hexdigest" "', argument " "1"" of type '" "SM3 *""'"); 
   }
   arg1 = reinterpret_cast< SM3 * >(argp1);
-  (arg1)->hexdigest(arg2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    (arg1)->hexdigest(arg2);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   {
     Py_XDECREF(resultobj);
@@ -3402,7 +3423,11 @@ SWIGINTERN PyObject *_wrap_SM3_copy(PyObject *SWIGUNUSEDPARM(self), PyObject *ar
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SM3_copy" "', argument " "1"" of type '" "SM3 *""'"); 
   }
   arg1 = reinterpret_cast< SM3 * >(argp1);
-  result = (arg1)->copy();
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (arg1)->copy();
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_NewPointerObj((new SM3(static_cast< const SM3& >(result))), SWIGTYPE_p_SM3, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
@@ -4219,6 +4244,9 @@ SWIG_init(void) {
   SWIG_addvarlink(SWIG_globals(),(char*)"SM3_digest_size",Swig_var_SM3_digest_size_get, Swig_var_SM3_digest_size_set);
   SWIG_addvarlink(SWIG_globals(),(char*)"SM3_digestsize",Swig_var_SM3_digestsize_get, Swig_var_SM3_digestsize_set);
   SWIG_addvarlink(SWIG_globals(),(char*)"SM3_name",Swig_var_SM3_name_get, Swig_var_SM3_name_set);
+  
+  /* Initialize threading */
+  SWIG_PYTHON_INITIALIZE_THREADS;
 #if PY_VERSION_HEX >= 0x03000000
   return m;
 #else

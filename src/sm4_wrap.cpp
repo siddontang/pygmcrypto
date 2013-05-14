@@ -9,6 +9,7 @@
  * ----------------------------------------------------------------------------- */
 
 #define SWIGPYTHON
+#define SWIG_PYTHON_THREADS
 #define SWIG_PYTHON_DIRECTOR_NO_VTABLE
 
 
@@ -3277,7 +3278,11 @@ SWIGINTERN PyObject *_wrap_new_SM4(PyObject *SWIGUNUSEDPARM(self), PyObject *arg
       }
     }
   }
-  result = (SM4 *)new SM4(arg1);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (SM4 *)new SM4(arg1);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_SM4, SWIG_POINTER_NEW |  0 );
   return resultobj;
 fail:
@@ -3298,7 +3303,11 @@ SWIGINTERN PyObject *_wrap_delete_SM4(PyObject *SWIGUNUSEDPARM(self), PyObject *
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_SM4" "', argument " "1"" of type '" "SM4 *""'"); 
   }
   arg1 = reinterpret_cast< SM4 * >(argp1);
-  delete arg1;
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    delete arg1;
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -3336,7 +3345,11 @@ SWIGINTERN PyObject *_wrap_SM4_encrypt(PyObject *SWIGUNUSEDPARM(self), PyObject 
     
     arg2 = (unsigned char*)malloc(arg4);
   }
-  (arg1)->encrypt(arg2,(unsigned char const *)arg3,arg4);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    (arg1)->encrypt(arg2,(unsigned char const *)arg3,arg4);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   {
     Py_XDECREF(resultobj);
@@ -3379,7 +3392,11 @@ SWIGINTERN PyObject *_wrap_SM4_decrypt(PyObject *SWIGUNUSEDPARM(self), PyObject 
     
     arg2 = (unsigned char*)malloc(arg4);
   }
-  (arg1)->decrypt(arg2,(unsigned char const *)arg3,arg4);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    (arg1)->decrypt(arg2,(unsigned char const *)arg3,arg4);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   {
     Py_XDECREF(resultobj);
@@ -4178,6 +4195,9 @@ SWIG_init(void) {
   SWIG_addvarlink(SWIG_globals(),(char*)"SM4_block_size",Swig_var_SM4_block_size_get, Swig_var_SM4_block_size_set);
   SWIG_addvarlink(SWIG_globals(),(char*)"SM4_key_size",Swig_var_SM4_key_size_get, Swig_var_SM4_key_size_set);
   SWIG_addvarlink(SWIG_globals(),(char*)"SM4_name",Swig_var_SM4_name_get, Swig_var_SM4_name_set);
+  
+  /* Initialize threading */
+  SWIG_PYTHON_INITIALIZE_THREADS;
 #if PY_VERSION_HEX >= 0x03000000
   return m;
 #else

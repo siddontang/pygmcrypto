@@ -15,8 +15,8 @@
  */
 typedef struct
 {
-    unsigned long total[2];     /*!< number of bytes processed  */
-    unsigned long state[8];     /*!< intermediate digest state  */
+    unsigned int total[2];     /*!< number of bytes processed  */
+    unsigned int state[8];     /*!< intermediate digest state  */
     unsigned char buffer[64];   /*!< data block being processed */
 
     unsigned char ipad[64];     /*!< HMAC: inner padding        */

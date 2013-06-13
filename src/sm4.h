@@ -13,7 +13,7 @@
 typedef struct
 {
     int mode;                   /*!<  encrypt/decrypt   */
-    unsigned long sk[32];       /*!<  SM4 subkeys       */
+    unsigned int sk[32];       /*!<  SM4 subkeys       */
 }
 sm4_context;
 

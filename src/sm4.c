@@ -59,18 +59,18 @@
 /*
  * 32-bit integer manipulation macros (big endian)
  */
-#ifndef GET_ULONG_BE
-#define GET_ULONG_BE(n,b,i)                             \
+#ifndef GET_UINT32_BE
+#define GET_UINT32_BE(n,b,i)                             \
 {                                                       \
-    (n) = ( (unsigned long) (b)[(i)    ] << 24 )        \
-        | ( (unsigned long) (b)[(i) + 1] << 16 )        \
-        | ( (unsigned long) (b)[(i) + 2] <<  8 )        \
-        | ( (unsigned long) (b)[(i) + 3]       );       \
+    (n) = ( (unsigned int) (b)[(i)    ] << 24 )        \
+        | ( (unsigned int) (b)[(i) + 1] << 16 )        \
+        | ( (unsigned int) (b)[(i) + 2] <<  8 )        \
+        | ( (unsigned int) (b)[(i) + 3]       );       \
 }
 #endif
 
-#ifndef PUT_ULONG_BE
-#define PUT_ULONG_BE(n,b,i)                             \
+#ifndef PUT_UINT32_BE
+#define PUT_UINT32_BE(n,b,i)                             \
 {                                                       \
     (b)[(i)    ] = (unsigned char) ( (n) >> 24 );       \
     (b)[(i) + 1] = (unsigned char) ( (n) >> 16 );       \
@@ -86,7 +86,7 @@
 #define  SHL(x,n) (((x) & 0xFFFFFFFF) << n)
 #define ROTL(x,n) (SHL((x),n) | ((x) >> (32 - n)))
 
-#define SWAP(a,b) { unsigned long t = a; a = b; b = t; t = 0; }
+#define SWAP(a,b) { unsigned int t = a; a = b; b = t; t = 0; }
 
 /*
  * Expanded SM4 S-boxes
@@ -113,10 +113,10 @@ static const unsigned char SboxTable[16][16] =
 };
 
 /* System parameter */
-static const unsigned long FK[4] = {0xa3b1bac6,0x56aa3350,0x677d9197,0xb27022dc};
+static const unsigned int FK[4] = {0xa3b1bac6,0x56aa3350,0x677d9197,0xb27022dc};
 
 /* fixed parameter */
-static const unsigned long CK[32] =
+static const unsigned int CK[32] =
 {
 0x00070e15,0x1c232a31,0x383f464d,0x545b6269,
 0x70777e85,0x8c939aa1,0xa8afb6bd,0xc4cbd2d9,
@@ -147,18 +147,18 @@ static unsigned char sm4Sbox(unsigned char inch)
  * args:    [in] a: a is a 32 bits unsigned value;
  * return: c: c is calculated with line algorithm "L" and nonline algorithm "t"
  */
-static unsigned long sm4Lt(unsigned long ka)
+static unsigned int sm4Lt(unsigned int ka)
 {
-    unsigned long bb = 0;
-    unsigned long c = 0;
+    unsigned int bb = 0;
+    unsigned int c = 0;
     unsigned char a[4];
 	unsigned char b[4];
-    PUT_ULONG_BE(ka,a,0)
+    PUT_UINT32_BE(ka,a,0)
     b[0] = sm4Sbox(a[0]);
     b[1] = sm4Sbox(a[1]);
     b[2] = sm4Sbox(a[2]);
     b[3] = sm4Sbox(a[3]);
-	GET_ULONG_BE(bb,b,0)
+	GET_UINT32_BE(bb,b,0)
     c =bb^(ROTL(bb, 2))^(ROTL(bb, 10))^(ROTL(bb, 18))^(ROTL(bb, 24));
     return c;
 }
@@ -173,7 +173,7 @@ static unsigned long sm4Lt(unsigned long ka)
  * args:    [in] rk: encryption/decryption key;
  * return the contents of encryption/decryption contents.
  */
-static unsigned long sm4F(unsigned long x0, unsigned long x1, unsigned long x2, unsigned long x3, unsigned long rk)
+static unsigned int sm4F(unsigned int x0, unsigned int x1, unsigned int x2, unsigned int x3, unsigned int rk)
 {
     return (x0^sm4Lt(x1^x2^x3^rk));
 }
@@ -184,32 +184,32 @@ static unsigned long sm4F(unsigned long x0, unsigned long x1, unsigned long x2, 
  * args:    [in] a: a is a 32 bits unsigned value;
  * return: sk[i]: i{0,1,2,3,...31}.
  */
-static unsigned long sm4CalciRK(unsigned long ka)
+static unsigned int sm4CalciRK(unsigned int ka)
 {
-    unsigned long bb = 0;
-    unsigned long rk = 0;
+    unsigned int bb = 0;
+    unsigned int rk = 0;
     unsigned char a[4];
     unsigned char b[4];
-    PUT_ULONG_BE(ka,a,0)
+    PUT_UINT32_BE(ka,a,0)
     b[0] = sm4Sbox(a[0]);
     b[1] = sm4Sbox(a[1]);
     b[2] = sm4Sbox(a[2]);
     b[3] = sm4Sbox(a[3]);
-	GET_ULONG_BE(bb,b,0)
+	GET_UINT32_BE(bb,b,0)
     rk = bb^(ROTL(bb, 13))^(ROTL(bb, 23));
     return rk;
 }
 
-static void sm4_setkey( unsigned long SK[32], unsigned char key[16] )
+static void sm4_setkey( unsigned int SK[32], unsigned char key[16] )
 {
-    unsigned long MK[4];
-    unsigned long k[36];
-    unsigned long i = 0;
+    unsigned int MK[4];
+    unsigned int k[36];
+    unsigned int i = 0;
 
-    GET_ULONG_BE( MK[0], key, 0 );
-    GET_ULONG_BE( MK[1], key, 4 );
-    GET_ULONG_BE( MK[2], key, 8 );
-    GET_ULONG_BE( MK[3], key, 12 );
+    GET_UINT32_BE( MK[0], key, 0 );
+    GET_UINT32_BE( MK[1], key, 4 );
+    GET_UINT32_BE( MK[2], key, 8 );
+    GET_UINT32_BE( MK[3], key, 12 );
     k[0] = MK[0]^FK[0];
     k[1] = MK[1]^FK[1];
     k[2] = MK[2]^FK[2];
@@ -226,18 +226,18 @@ static void sm4_setkey( unsigned long SK[32], unsigned char key[16] )
  * SM4 standard one round processing
  *
  */
-static void sm4_one_round( unsigned long sk[32],
+static void sm4_one_round( unsigned int sk[32],
                     unsigned char input[16],
                     unsigned char output[16] )
 {
-    unsigned long i = 0;
-    unsigned long ulbuf[36];
+    unsigned int i = 0;
+    unsigned int ulbuf[36];
 
     memset(ulbuf, 0, sizeof(ulbuf));
-    GET_ULONG_BE( ulbuf[0], input, 0 )
-    GET_ULONG_BE( ulbuf[1], input, 4 )
-    GET_ULONG_BE( ulbuf[2], input, 8 )
-    GET_ULONG_BE( ulbuf[3], input, 12 )
+    GET_UINT32_BE( ulbuf[0], input, 0 )
+    GET_UINT32_BE( ulbuf[1], input, 4 )
+    GET_UINT32_BE( ulbuf[2], input, 8 )
+    GET_UINT32_BE( ulbuf[3], input, 12 )
     while(i<32)
     {
         ulbuf[i+4] = sm4F(ulbuf[i], ulbuf[i+1], ulbuf[i+2], ulbuf[i+3], sk[i]);
@@ -246,10 +246,10 @@ static void sm4_one_round( unsigned long sk[32],
 // #endif
 	    i++;
     }
-	PUT_ULONG_BE(ulbuf[35],output,0);
-	PUT_ULONG_BE(ulbuf[34],output,4);
-	PUT_ULONG_BE(ulbuf[33],output,8);
-	PUT_ULONG_BE(ulbuf[32],output,12);
+	PUT_UINT32_BE(ulbuf[35],output,0);
+	PUT_UINT32_BE(ulbuf[34],output,4);
+	PUT_UINT32_BE(ulbuf[33],output,8);
+	PUT_UINT32_BE(ulbuf[32],output,12);
 }
 
 /*
